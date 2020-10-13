@@ -26,7 +26,7 @@ def print_records(url, source):
                         for c in cleantext:
                             if c == 'a':
                                 dict['a'] += 1
-                            else:
+                            elif c.isalpha(): # count only a-zA-Z
                                 dict['rest'] +=1
 
                         print("\rsource(" + str(source) + ") hit(" + str(hit) + ") {:.6f}%".format(dict['a'] / dict['rest'] * 100), end="")
