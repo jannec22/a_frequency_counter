@@ -1,0 +1,3 @@
+eautifulsoup4
+lxml
+warcio

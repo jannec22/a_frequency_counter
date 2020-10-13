@@ -1,5 +1,4 @@
 #!/usr/bin/python3
-from collections import Counter
 from bs4 import BeautifulSoup
 import sys
 import requests
