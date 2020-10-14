@@ -20,6 +20,6 @@ MAX_PATHS="10"
 [ -n "$2" ] && Y="$2"
 [ -n "$3" ] && DD="$3"
 
-curl -f "https://commoncrawl.s3.amazonaws.com/crawl-data/CC-MAIN-$Y-$DD/warc.paths.gz" | gzip -d | shuf -n "$MAX_PATHS" | while read url; do
+curl -fs "https://commoncrawl.s3.amazonaws.com/crawl-data/CC-MAIN-$Y-$DD/warc.paths.gz" | gzip -d | shuf -n "$MAX_PATHS" | while read url; do
     echo "https://commoncrawl.s3.amazonaws.com/$url"
 done

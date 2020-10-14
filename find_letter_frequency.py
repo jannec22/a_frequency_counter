@@ -4,12 +4,17 @@ import sys
 import requests
 from warcio.archiveiterator import ArchiveIterator
 
-dict = {'a':0,'rest':0}
+letter = 'a'
+if len(sys.argv) > 1:
+    letter = sys.argv[1]
+
+dict = {'rest':0}
+dict[letter] = 0
 max_records = 1000
 source_index = 1
 
-if len(sys.argv) > 1:
-    max_records = int(sys.argv[1])
+if len(sys.argv) > 2:
+    max_records = int(sys.argv[2])
 
 def print_records(url, source):
     hit = 1
@@ -23,15 +28,16 @@ def print_records(url, source):
                         raw = record.content_stream().read()
                         cleantext = BeautifulSoup(raw, "lxml").text
                         for c in cleantext:
-                            if c == 'a':
-                                dict['a'] += 1
+                            if c == letter:
+                                dict[letter] += 1
                             elif c.isalpha(): # count only a-zA-Z
                                 dict['rest'] +=1
 
-                        print("\rsource(" + str(source) + ") hit(" + str(hit) + ") {:.6f}%".format(dict['a'] / dict['rest'] * 100), end="")
-                        hit += 1
+                        if dict['rest'] > 0:
+                            print("\rsource(" + str(source) + ") hit(" + str(hit) + ") \"" + letter + "\" frequency: " + "{:.6f}%".format(dict[letter] / dict['rest'] * 100), end="")
+                            hit += 1
             else:
-                print("\nsource record limit reached.")
+                print("\r----------source record limit reached.----------")
                 break
 
 print("a frequency in given website records:")
@@ -43,3 +49,5 @@ try:
 except KeyboardInterrupt:
     print('\nInterrupted')
     sys.exit(0)
+
+print("final \"" + letter + "\" frequency: " + "{:.6f}%".format(dict[letter] / dict['rest'] * 100))
